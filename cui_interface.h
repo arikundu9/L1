@@ -25,9 +25,8 @@ void parse_arg(int argc,char **argv){
 			printh();
 		else if(strcmp(ctmp,"-v")==0)
 			printf("\n%s\n",VERSION);
-		else if( (*ctmp=='-') and (*(ctmp+1)=='o') ){
+		else if( (*ctmp=='-') and (*(ctmp+1)=='o') )
 			in.target_path=ctmp+3;
-		}
 		else if(i+1 == argc){
 			in.source_path=ctmp;
 			interprete_file(&in);
