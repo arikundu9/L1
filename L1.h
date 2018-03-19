@@ -1,6 +1,5 @@
 #ifndef _L1_H
 #define _L1_H
-#include<stdio.h>
 #define VERSION "0.2"
 typedef struct pinput{
 	char *source_path,*target_path;
