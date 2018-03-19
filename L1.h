@@ -3,10 +3,17 @@
 #include<stdio.h>
 #include<stdlib.h>
 #define VERSION "0.2"
+
 #define LINE_MAX 100
+
 typedef struct pinput{
 	char *source_path,*target_path;
 } pinput;
+typedef struct line{
+	int type;
+	
+} line;
+
 /*Function Declerations*/
 
 void interprete_file(pinput *);
@@ -31,7 +38,6 @@ void interprete_file(pinput *input){
 			while(fgets(line,LINE_MAX,fs)){
 				fprintf(ft,line);
 			}
-			//fprintf(ft,"bin");
 			fclose(ft);
 		}
 		fclose(fs);
