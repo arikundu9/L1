@@ -5,6 +5,13 @@
 #include<stdlib.h>
 #include "L1.h"
 
+/*Function Declerations*/
+
+void printh();
+void parse_arg(int,char**);
+
+/*Function Definations*/
+
 void printh(){
 	printf("\nL1 Code Interpreter   v%s\n",VERSION);
 	printf("\nUsage:\tL1 [-OPTIONS] [INPUT_L1_SOURCE]\n");
