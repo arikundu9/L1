@@ -1,3 +1,11 @@
+/* Project L1 - A new programming language for noobs
+ *
+ * Copyright (C) 2018-2019 - Arijit Kundu <arikundu9@gmail.com>
+ * 
+ * This file belongs to the Project L1.
+ * Any commercial use of this file is prohibited.
+ */
+
 #ifndef _CUI_INTERFACE
 #define _CUI_INTERFACE
 #include<stdio.h>
