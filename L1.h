@@ -1,16 +1,10 @@
-/* Project L1 - A new programming language for noobs
- *
- * Copyright (C) 2018-2019 - Arijit Kundu <arikundu9@gmail.com>
- * 
- * This file belongs to the Project L1.
- * Any commercial use of this file is prohibited.
- */
-
 #ifndef _L1_H
 #define _L1_H
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include<regex>
+#include "break_word.h"
 #define VERSION "0.2"
 
 #define LINE_MAX 100
@@ -22,11 +16,13 @@
 #define LT_ELSE_STMT 16
 #define LT_RET_STMT 32
 
+
 typedef struct pinput{
 	char *source_path,*target_path;
 } pinput;
 typedef struct line{
-	int type;
+	//int type;
+	char type[30];
 	int indent;
 } line;
 
@@ -56,7 +52,7 @@ void interprete_file(pinput *input){
 			int l1=1;
 			while(fgets(ln,LINE_MAX,fs)){
 				parsel(ln,&rl);
-				printf("%d: Indent: %d, Type: %d\n",l1++,rl.indent,rl.type);
+				printf("%d: Indent: %d, Type: %s\n",l1++,rl.indent,rl.type);
 				fprintf(ft,ln);
 			}
 			fclose(ft);
@@ -66,8 +62,10 @@ void interprete_file(pinput *input){
 }
 
 void parsel(const char *l,line *ret_l){
+	line_string ls;
+	char **words;
 	ret_l->indent=0;
-	ret_l->type=0;
+	//ret_l->type=0;
 	const char *L=l;
 	bool indent_end=false;
 	while(*L!='\0'){
@@ -75,18 +73,9 @@ void parsel(const char *l,line *ret_l){
 			ret_l->indent+=*L;
 		else{
 			indent_end=true;
-			if( (*L=='v') and (*(L+1)=='a') and (*(L+2)=='r') and (*(L+3)==' ') )
-				ret_l->type=LT_VAR_DEC;
-			if( (*L=='l') and (*(L+1)=='e') and (*(L+2)=='t') and (*(L+3)==' ') )
-				ret_l->type=LT_VAR_DEC;
-			if( (*L=='f') and (*(L+1)=='o') and (*(L+2)=='r') and (*(L+3)==' ') )
-				ret_l->type=LT_FOR_LOOP;
-			if( (*L=='f') and (*(L+1)=='u') and (*(L+2)=='n') and (*(L+3)==' ') )
-				ret_l->type=LT_FUN_DEC;
-			if( (*L=='i') and (*(L+1)=='f') and (*(L+2)==' ') )
-				ret_l->type=LT_IF_STMT;
-			if( (*L=='e') and (*(L+1)=='l') and (*(L+2)=='s') and (*(L+3)=='e') and ((*(L+4)==' ') or ((int)(*(L+4))==13)) )
-				ret_l->type=LT_ELSE_STMT;
+			ls=break_into_words(L);
+			words=get_words(L,ls);
+			strcpy(ret_l->type,words[0]);
 		}
 		L++;
 	}
