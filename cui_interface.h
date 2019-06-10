@@ -12,6 +12,9 @@
 #include<string.h>
 #include<stdlib.h>
 #include "L1.h"
+/*├───pInput{char *source_path,*target_path;}
+ *└───void interprete_file(pInput *);
+ */
 
 /*Function Declerations*/
 
@@ -33,7 +36,7 @@ void printh(){
 
 void parse_arg(int argc,char **argv){
 	char *ctmp;
-	pinput in;
+	pInput in;
 	for(int i=1; i<argc; i++){
 		ctmp=*(argv+i);
 		if(strcmp(ctmp,"-help")==0)
