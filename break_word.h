@@ -1,3 +1,10 @@
+/* Project L1 - A new programming language for noobs
+ *
+ * Copyright (C) 2018-2019 - Arijit Kundu <arikundu9@gmail.com>
+ * 
+ * This file belongs to the Project L1.
+ * Any commercial use of this file is prohibited.
+ */
 #ifndef _L1_BREAK_WORD_H
 #define _L1_BREAK_WORD_H
 #include<cstdio>
