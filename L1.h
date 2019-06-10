@@ -5,11 +5,12 @@
  * This file belongs to the Project L1.
  * Any commercial use of this file is prohibited.
  */
+
 #ifndef _L1_H
 #define _L1_H
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
+#include<cstdio>
+#include<cstdlib>
+#include<cstring>
 #include<regex>
 #include "break_word.h"
 #define VERSION "0.2"
@@ -60,7 +61,7 @@ void interprete_file(pinput *input){
 			while(fgets(ln,LINE_MAX,fs)){
 				parsel(ln,&rl);
 				printf("%d: Indent: %d, Type: %s\n",l1++,rl.indent,rl.type);
-				fprintf(ft,ln);
+				fprintf(ft,"%d: Indent: %d, Type: %s\n",l1++,rl.indent,rl.type);
 			}
 			fclose(ft);
 		}
@@ -69,22 +70,22 @@ void interprete_file(pinput *input){
 }
 
 void parsel(const char *l,line *ret_l){
-	line_string ls;
+	FsmLine ls;
 	char **words;
 	ret_l->indent=0;
 	//ret_l->type=0;
 	const char *L=l;
 	bool indent_end=false;
-	while(*L!='\0'){
-		if(!indent_end and (*L==32 || *L==9))
+	while(!indent_end){
+		if(*L==32 or *L==9){
 			ret_l->indent+=*L;
-		else{
-			indent_end=true;
-			ls=break_into_words(L);
-			words=get_words(L,ls);
-			strcpy(ret_l->type,words[0]);
+			L++;
 		}
-		L++;
+		else
+			indent_end=true;
 	}
+	ls=break_into_words(L);
+	words=get_words(L,ls);
+	strcpy(ret_l->type,words[0]);
 }
 #endif

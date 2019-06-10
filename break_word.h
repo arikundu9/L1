@@ -5,6 +5,7 @@
  * This file belongs to the Project L1.
  * Any commercial use of this file is prohibited.
  */
+
 #ifndef _L1_BREAK_WORD_H
 #define _L1_BREAK_WORD_H
 #include<cstdio>
@@ -14,18 +15,30 @@ typedef struct{
 	bool accepted;
 	int nosubstr;
 	int map[30][2];
-} line_string;
+} FsmLine;
 
-bool isBlankSpace(const char *c){
+/*Function Declerations*/
+
+inline bool isBlankSpace(const char *);
+inline bool isQuote(const char *);
+inline bool isLastChar(const char *);
+inline bool isOtherChar(const char *);
+void increment(const char **,int *);
+FsmLine break_into_words(const char *);
+char** get_words(const char *,FsmLine);
+
+/*Function Definations*/
+
+inline bool isBlankSpace(const char *c){
 	return (*c==' ') ? true : false ;
 }
-bool isQuote(const char *c){
+inline bool isQuote(const char *c){
 	return (*c=='\\' and *(c+1)=='\"') ? true : false ;
 }
-bool isLastChar(const char *c){
+inline bool isLastChar(const char *c){
 	return(*c=='\0');
 }
-bool isOtherChar(const char *c){
+inline bool isOtherChar(const char *c){
 	return (!isBlankSpace(c) and !isQuote(c) and !isLastChar(c)) ? true : false ;
 }
 void increment(const char **c,int *i){
@@ -35,10 +48,9 @@ void increment(const char **c,int *i){
 		(*c)++,(*i)++;
 }
 
-
-line_string break_into_words(const char *st){
+FsmLine break_into_words(const char *st){
 	int state=0,count=0,i=0;
-	line_string l;
+	FsmLine l;
 	while(true){
 		if(state==0){
 			if(isBlankSpace(st))
@@ -100,16 +112,14 @@ line_string break_into_words(const char *st){
 	return l;
 }
 
-char** get_words(const char *st,line_string l){
+char** get_words(const char *st,FsmLine l){
 	char **r;
 	int i,j,k;
 	if(l.accepted==1){
 		r=(char**)malloc(sizeof(char*)*(l.nosubstr+1));
 		for(i=0;i<l.nosubstr;i++){
-			//cout<<endl<<i+1<<". ";
 			*(r+i) = (char*) malloc( sizeof(char)*(l.map[i][1]-l.map[i][0]+2) );
 			for(k=0,j=l.map[i][0]; j<=l.map[i][1]; j++,k++){
-				//printf("%c",*(st+j));
 				*(*(r+i)+k)=*(st+j);
 			}
 			*(*(r+i)+k)='\0';
