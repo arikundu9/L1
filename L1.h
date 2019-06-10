@@ -5,7 +5,7 @@
  * This file belongs to the Project L1.
  * Any commercial use of this file is prohibited.
  */
- 
+
 #ifndef _L1_H
 #define _L1_H
 #include<cstdio>
