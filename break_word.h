@@ -18,28 +18,28 @@ typedef struct{
 } FsmLine;
 
 /*Function Declerations*/
-
+char **getWords(const char *);
 inline bool isBlankSpace(const char *);
 inline bool isQuote(const char *);
 inline bool isLastChar(const char *);
 inline bool isOtherChar(const char *);
 void increment(const char **,int *);
-FsmLine break_into_words(const char *);
+FsmLine word_parser_fsm(const char *);
 char** get_words(const char *,FsmLine);
 
 /*Function Definations*/
 
 inline bool isBlankSpace(const char *c){
-	return (*c==' ') ? true : false ;
+	return (*c==' ');
 }
 inline bool isQuote(const char *c){
-	return (*c=='\\' and *(c+1)=='\"') ? true : false ;
+	return (*c=='\\' and *(c+1)=='\"');
 }
 inline bool isLastChar(const char *c){
 	return(*c=='\0');
 }
 inline bool isOtherChar(const char *c){
-	return (!isBlankSpace(c) and !isQuote(c) and !isLastChar(c)) ? true : false ;
+	return (!isBlankSpace(c) and !isQuote(c) and !isLastChar(c));
 }
 void increment(const char **c,int *i){
 	if(isQuote(*c))
@@ -48,7 +48,7 @@ void increment(const char **c,int *i){
 		(*c)++,(*i)++;
 }
 
-FsmLine break_into_words(const char *st){
+FsmLine word_parser_fsm(const char *st){
 	int state=0,count=0,i=0;
 	FsmLine l;
 	while(true){
@@ -129,5 +129,13 @@ char** get_words(const char *st,FsmLine l){
 		*(*(r+i)+1)='\0';
 	}
 	return r;
+}
+
+char **getWords(const char *s){
+	FsmLine l;
+	char **words;
+	l=word_parser_fsm(s);
+	words=get_words(s,l);
+	return words;
 }
 #endif
