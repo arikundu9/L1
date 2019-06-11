@@ -13,6 +13,9 @@
 #include<cstring>
 #include<regex>
 #include "break_word.h"
+/*├───|
+ *└───char **getWords(const char *);
+ */
 #define VERSION "0.2"
 
 #define LINE_MAX 100
@@ -25,27 +28,27 @@
 #define LT_RET_STMT 32
 
 
-typedef struct pinput{
+typedef struct pInput{
 	char *source_path,*target_path;
-} pinput;
-typedef struct line{
+} pInput;
+typedef struct nodeLine{
 	//int type;
 	char type[30];
 	int indent;
-} line;
+} nodeLine;
 
 /*Function Declerations*/
 
-void interprete_file(pinput *);
-void parsel(const char *,line *);
+void interprete_file(pInput *);
+void parsel(const char *,nodeLine *);
 
 /*Function Definations*/
 
-void interprete_file(pinput *input){
+void interprete_file(pInput *input){
 	FILE *fs,*ft;
-	char ln[LINE_MAX];
+	char rawLine[LINE_MAX];
 	fs=fopen(input->source_path ,"rb");
-	line rl;
+	nodeLine rl;
 	if(fs==NULL){
 		fprintf(stderr,"\nERROR::Failed to open source file.\n");
 		exit(1);
@@ -58,8 +61,8 @@ void interprete_file(pinput *input){
 		}
 		else{
 			int l1=1;
-			while(fgets(ln,LINE_MAX,fs)){
-				parsel(ln,&rl);
+			while(fgets(rawLine,LINE_MAX,fs)){
+				parsel(rawLine,&rl);
 				printf("%d: Indent: %d, Type: %s\n",l1++,rl.indent,rl.type);
 				fprintf(ft,"%d: Indent: %d, Type: %s\n",l1++,rl.indent,rl.type);
 			}
@@ -69,8 +72,7 @@ void interprete_file(pinput *input){
 	}
 }
 
-void parsel(const char *l,line *ret_l){
-	FsmLine ls;
+void parsel(const char *l,nodeLine *ret_l){
 	char **words;
 	ret_l->indent=0;
 	//ret_l->type=0;
@@ -84,8 +86,8 @@ void parsel(const char *l,line *ret_l){
 		else
 			indent_end=true;
 	}
-	ls=break_into_words(L);
-	words=get_words(L,ls);
+	words=getWords(L);
 	strcpy(ret_l->type,words[0]);
+	free(words);
 }
 #endif
