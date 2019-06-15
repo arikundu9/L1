@@ -2,5 +2,5 @@ CPP      = g++.exe
 CC       = gcc.exe
 BIN      = L1.exe
 
-all: L1.cpp L1.h cui_interface.h break_word.h
-	$(CPP) L1.cpp -o $(BIN)
+all: L1.cpp L1.hpp cui_interface.h lexer.hpp
+	$(CPP) -I $(CURDIR) L1.cpp -o $(BIN)
