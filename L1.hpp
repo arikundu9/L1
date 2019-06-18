@@ -13,10 +13,11 @@
 #include<cstring>
 #include<regex>
 #include<lexer.hpp>
-/*└───char **getWords(const char *);
+/*|---char** getWords(const char *);
+ *+---char** explode(const char *,char);
  */
 //#include "tokenizer.hpp"
-/*└───tokenizedLine getTokenozedLine(const char *);
+/*+---tokenizedLine getTokenozedLine(const char *);
  */
 #define VERSION "0.2"
 

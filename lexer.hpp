@@ -8,8 +8,10 @@
 
 #ifndef _L1_LEXER_H
 #define _L1_LEXER_H
-#include<cstdio>
+#include<cstdlib>
 #include<cstring>
+char** getWords(const char *);
+char** explode(const char *,char);
 namespace lexer{
 	typedef struct{
 		bool accepted;
@@ -18,7 +20,6 @@ namespace lexer{
 	} FsmLine;
 
 	/*Function Declerations*/
-	char **getWords(const char *);
 	inline bool isBlankSpace(const char *);
 	inline bool isEscQuote(const char *);
 	inline bool isQuote(const char *);
@@ -66,7 +67,7 @@ namespace lexer{
 				if(isLastChar(st))
 					break;
 				if(isQuote(st)){
-					l.map[count][0]=i+1;
+					l.map[count][0]=i/* i+1 */;
 					state=2;
 				}
 			}
@@ -86,7 +87,7 @@ namespace lexer{
 				if(isQuote(st)){
 					l.map[count][1]=i-1;
 					count++;
-					l.map[count][0]=i+1;
+					l.map[count][0]=i/* i+1 */;
 					state=2;
 				}
 			}
@@ -96,7 +97,7 @@ namespace lexer{
 				if(isOtherChar(st))
 					state=2;
 				if(isQuote(st)){
-					l.map[count][1]=i-1;
+					l.map[count][1]=i/* i-1 */;
 					state=0;
 					count++;
 				}
@@ -111,7 +112,7 @@ namespace lexer{
 		}
 		else{
 			l.accepted=false;
-			l.nosubstr=count+1;
+			//l.nosubstr=count+1;
 		}
 		return l;
 	}
@@ -122,7 +123,7 @@ namespace lexer{
 		if(l.accepted==1){
 			r=(char**)malloc(sizeof(char*)*(l.nosubstr+1));
 			for(i=0;i<l.nosubstr;i++){
-				*(r+i) = (char*) malloc( sizeof(char)*(l.map[i][1]-l.map[i][0]+2) );
+				*(r+i) = (char*) malloc( sizeof(char)*(l.map[i][1]-l.map[i][0])+1);
 				for(k=0,j=l.map[i][0]; j<=l.map[i][1]; j++,k++)
 					*(*(r+i)+k)=*(st+j);
 				*(*(r+i)+k)='\0';
@@ -135,12 +136,55 @@ namespace lexer{
 	}
 }
 
-char **getWords(const char *s){
+char** getWords(const char *s){
 	using namespace lexer;
 	FsmLine l;
 	char **words;
 	l=word_parser_fsm(s);
 	words=get_words(s,l);
 	return words;
+}
+
+char** explode(const char *s,char z){
+	using namespace lexer;
+	char **r;
+	int count=0;
+	int start=0,end=0,i=0;
+	int map[30][2];
+	while(true){
+		if(*s==z){
+			end=i-1;
+			if(i!=start){
+				map[count][0]=start;
+				map[count][1]=end;
+				count++;
+			}
+			start=i+1;
+		}
+		if(isLastChar(s)){
+			end=i-1;
+			if(i!=start){
+				map[count][0]=start;
+				map[count][1]=end;
+				count++;
+			}
+			break;
+		}
+		s++;
+		i++;
+	}
+	s-=i;
+	r=(char**)malloc(sizeof(char*)*(count+1));
+	int j,k;
+	for(i=0;i<count;i++){
+		*(r+i) = (char*) malloc( sizeof(char)*(map[i][1]-map[i][0]+1) );
+		for(k=0,j=map[i][0]; j<=map[i][1]; j++,k++)
+			*(*(r+i)+k)=*(s+j);
+		*(*(r+i)+k)='\0';
+	}
+	r[i]=(char*)malloc(2);
+	*(*(r+i)+0)='\0';
+	*(*(r+i)+1)='\0';
+	return r;
 }
 #endif

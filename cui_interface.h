@@ -12,8 +12,8 @@
 #include<string.h>
 #include<stdlib.h>
 #include<L1.hpp>
-/*├───pInput{char *source_path,*target_path;}
- *└───void interprete_file(pInput *);
+/*|---pInput{char *source_path,*target_path;}
+ *+---void interprete_file(pInput *);
  */
 
 /*Function Declerations*/
