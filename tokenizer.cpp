@@ -146,7 +146,7 @@ bool isUnknownWordExists(tokenizedLine &tL){
 	for(tokenizedWord tW : tL){
 		if(tW.first==Tnull){
 			r=true;
-			//break;
+			break;
 		}
 	}
 	return r;
