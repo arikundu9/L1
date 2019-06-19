@@ -12,6 +12,7 @@
 #include<cstring>
 char** getWords(const char *);
 char** explode(const char *,char);
+bool isValidIdentifier(const char *);
 namespace lexer{
 	typedef struct{
 		bool accepted;
@@ -25,6 +26,9 @@ namespace lexer{
 	inline bool isQuote(const char *);
 	inline bool isLastChar(const char *);
 	inline bool isOtherChar(const char *);
+	inline bool is_AZ(const char *);
+	inline bool is_az(const char *);
+	inline bool is_09(const char *);
 	void increment(const char **,int *);
 	FsmLine word_parser_fsm(const char *);
 	char** get_words(const char *,FsmLine);
@@ -45,6 +49,15 @@ namespace lexer{
 	}
 	inline bool isOtherChar(const char *c){
 		return (!isBlankSpace(c) and !isQuote(c) and !isLastChar(c));
+	}
+	inline bool is_AZ(const char *c){
+		return (*c>=65 and *c<=90);
+	}
+	inline bool is_az(const char *c){
+		return (*c>=97 and *c<=122);
+	}
+	inline bool is_09(const char *c){
+		return (*c>=48 and *c<=57);
 	}
 	void increment(const char **c,int *i){
 		if(isEscQuote(*c))
@@ -186,5 +199,28 @@ char** explode(const char *s,char z){
 	*(*(r+i)+0)='\0';
 	*(*(r+i)+1)='\0';
 	return r;
+}
+
+bool isValidIdentifier(const char *s){
+	using namespace lexer;
+	int state=0;
+	while(!isLastChar(s)){
+		if(state==0){
+			if(*s=='_' or is_AZ(s) or is_az(s))
+				state=1;
+			else if(*s=='.' or *s==' ' or is_09(s))
+				state=2;
+		}
+		else if(state==1){
+			if(*s=='_' or is_AZ(s) or is_az(s) or is_09(s))
+				state=1;
+			else if(*s=='.')
+				state=0;
+			else
+				state=2;
+		}
+		s++;
+	}
+	return state==1;
 }
 #endif
