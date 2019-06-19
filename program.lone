@@ -1,0 +1,50 @@
+var x=3,y=2,z=x+y+3
+let name="arijit"
+console.print z+name+'-'
+var noofdata
+console.scan noofdata
+
+"gsh sjd" kjkjk
+
+for i=0,j=9;i<=noofdata;i++
+	if i%2==0
+		console.print "\t";
+	else
+		console.print ''
+
+fun isValid x,type=SELECT
+	if type==SELECT
+		return true
+	else return false
+	
+embdded cpp
+	int x=3;
+	for(int i=0;i<x;i++){
+		printf("%d - ",i);
+		scanf("%d",&x);
+	}
+embdded php
+	$name="arijit";
+	$x="hello ".$name." , Welcome!";
+	
+class point
+	private var x,y
+	fun point a,b
+		if typeof a==int and typeof b==float
+			x=a
+			y=b
+		alise s,x
+			
+	fun get_pt a,b
+		x=a,y=b
+	
+fun main argc,argv
+	point p 1,'A'
+	
+	if argc>3
+		
+	else if isValid
+		console.print "Invalid Arguments"
+		
+	fun1 fun2 fun3 p
+	return 0
