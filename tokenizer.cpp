@@ -16,6 +16,7 @@
 #include<regex> 
 #include<cstdio>
 #include "lexer.hpp"
+#include "linkedlist.hpp"
 /*|---char** getWords(const char *);
  *|---char** explode(const char *,char);
  *+---bool isValidIdentifier(const char *);
@@ -26,8 +27,8 @@ using namespace std;
 #define INT_RGX "[0-9]+"
 #define FLOAT_RGX "([0-9]+).([0-9]+)"
 
-char keywords[][12]={ "let","var","if","for","fun","void","int","float","string","and","or","not","this","class","public","private","protected"
-					};
+char keywords[][12]={ "let","var","if","for","fun","void","int","float","string","and","or","not","this","class",
+					  "public","private","protected"};
 char operators[][3]={"+=","-=","*=","/=","%=",
 					 ">=","<=","==","!=",
 					 "++","--",
@@ -187,10 +188,10 @@ void resolveUnknownWords(tokenizedLine &tL){
 						s+=i;
 						tW.first=Toperator;
 						tW.second=op;
-						//it=insert(tL,it,tW);
-						//it=tL.insert_after(it,/* tokenizedWord(Toperator,op) */tW);
+						tmpIt=tL.insert_after(it,/* tokenizedWord(Toperator,op) */tW);
+						// it=tmpIt;
 						//it=tL.emplace_after(it,Toperator,op);
-						cout<<"1st: "<<it->first<<" , 2nd: "<<it->second<<endl;
+						cout<<"1st: "<<tmpIt->first<<" , 2nd: "<<tmpIt->second<<endl;
 						//tL.erase_after(tmpIt);//tmp::
 						goto jmp;
 					}
@@ -201,15 +202,15 @@ void resolveUnknownWords(tokenizedLine &tL){
 		}
 	}
 }
-tokenizedLine::iterator insert(tokenizedLine &tL,tokenizedLine::iterator it,tokenizedWord tW){
-	//tokenizedLine::iterator it=tL.before_begin();
-	it=tL.insert_after(it,tW);
-	return it;
+void insert(tokenizedLine &tL){
+	tokenizedLine::iterator it=tL.before_begin();
+	it++;
+	it=tL.insert_after(it,tokenizedWord(Tkeyword,"the"));
 }
 int main(){
 	char str1[]="let x = 5.0 , TVal = 7 , person._age = TVal";
 	char str2[]="let x=5.0,TVal=7,person._age=TVal";
-	char str3[]="let x = \"jjkl as \\\" asljlf\" ,y== 3,m*= 'K'";
+	char str3[]="let x = \"jjkl as \\\" asljlf\" ,y== 3 , m *= 'K'";
 	char str4[]="for   ;i=0,j%=((i+2)/3),m='v';;;i<=noofdata;j=++i";
 	char **words;
 	tokenizedLine tL;
@@ -219,8 +220,9 @@ int main(){
 		tL.merge(getTokenozedLine(words[i]),__cmp);
 	}
 	free(words);
-	//resolveUnknownWords(tL);
-	removeUnknownWord(&tL);
+	resolveUnknownWords(tL);
+	insert(tL);
+	//removeUnknownWord(&tL);
 	for(tokenizedWord tW : tL){
 		cout<<"\nType: "<<tW.first<<", String: "<<tW.second;
 	}
