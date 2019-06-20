@@ -151,6 +151,16 @@ bool isUnknownWordExists(tokenizedLine &tL){
 	}
 	return r;
 }
+void removeUnknownWord(tokenizedLine *tL){
+	tokenizedLine::iterator it;
+	it=tL->before_begin();
+	for(tokenizedWord tW : *tL){
+		if(tW.first==Tnull){
+			tL->erase_after(it);
+		}
+		it++;
+	}
+}
 void resolveUnknownWords(tokenizedLine &tL){
 	const char *s;
 	int i;
@@ -175,10 +185,12 @@ void resolveUnknownWords(tokenizedLine &tL){
 					if(lexer::isLastChar(op+i)){
 						cout<<"Operator: "<<op<<endl;
 						s+=i;
-						//cout<<it->second<<endl;
 						tW.first=Toperator;
 						tW.second=op;
+						//it=insert(tL,it,tW);
 						//it=tL.insert_after(it,/* tokenizedWord(Toperator,op) */tW);
+						//it=tL.emplace_after(it,Toperator,op);
+						cout<<"1st: "<<it->first<<" , 2nd: "<<it->second<<endl;
 						//tL.erase_after(tmpIt);//tmp::
 						goto jmp;
 					}
@@ -189,11 +201,15 @@ void resolveUnknownWords(tokenizedLine &tL){
 		}
 	}
 }
-
+tokenizedLine::iterator insert(tokenizedLine &tL,tokenizedLine::iterator it,tokenizedWord tW){
+	//tokenizedLine::iterator it=tL.before_begin();
+	it=tL.insert_after(it,tW);
+	return it;
+}
 int main(){
 	char str1[]="let x = 5.0 , TVal = 7 , person._age = TVal";
 	char str2[]="let x=5.0,TVal=7,person._age=TVal";
-	char str3[]="let x = \"jjkl as \\\" asljlf\" ,y==3,m*='K'";
+	char str3[]="let x = \"jjkl as \\\" asljlf\" ,y== 3,m*= 'K'";
 	char str4[]="for   ;i=0,j%=((i+2)/3),m='v';;;i<=noofdata;j=++i";
 	char **words;
 	tokenizedLine tL;
@@ -203,7 +219,8 @@ int main(){
 		tL.merge(getTokenozedLine(words[i]),__cmp);
 	}
 	free(words);
-	resolveUnknownWords(tL);
+	//resolveUnknownWords(tL);
+	removeUnknownWord(&tL);
 	for(tokenizedWord tW : tL){
 		cout<<"\nType: "<<tW.first<<", String: "<<tW.second;
 	}
