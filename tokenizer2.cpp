@@ -34,10 +34,10 @@ char operators[][3]={"+=","-=","*=","/=","%=",
 					 "++","--",
 					 "+","-","*","/","%","=",
 					 ">","<",
-					 ",",":"/* ,";" */
+					 /* ",", */":"/* ,";" */
 					 };
 
-typedef enum tokens {Tnull,Tkeyword,Tidentifier,Toperator,Tinteger,Tfloatpoint,Tstring,Tchar,Tsemicolon,Tparenthsso,Tparenthssc} tokens;
+typedef enum tokens {Tnull,Tkeyword,Tidentifier,Toperator,Tinteger,Tfloatpoint,Tstring,Tchar,Tsemicolon,Tparenthsso,Tparenthssc,Tdot,Tcoma} tokens;
 typedef std::pair<tokens,const char *> tokenizedWord;
 typedef container::LinkedList<tokenizedWord> tokenizedLine;
 typedef std::vector<tokenizedLine> tokenizedProg;
@@ -114,6 +114,41 @@ tokenizedLine getTokenozedLine(const char *w){
 		tW.second=w;
 		it=tL.insertAfter(it,tW);
 		//cout<<w<<" is a char\n";
+		return tL;
+	}
+	if(*w==','){
+		tk=Tcoma;
+		tW.first=tk;
+		tW.second=w;
+		it=tL.insertAfter(it,tW);
+		return tL;
+	}
+	/* if(*w=='.'){
+		tk=Tdot;
+		tW.first=tk;
+		tW.second=w;
+		it=tL.insertAfter(it,tW);
+		return tL;
+	} */
+	if(*w==';'){
+		tk=Tsemicolon;
+		tW.first=tk;
+		tW.second=w;
+		it=tL.insertAfter(it,tW);
+		return tL;
+	}
+	if(*w=='('){
+		tk=Tparenthsso;
+		tW.first=tk;
+		tW.second=w;
+		it=tL.insertAfter(it,tW);
+		return tL;
+	}
+	if(*w==')'){
+		tk=Tparenthssc;
+		tW.first=tk;
+		tW.second=w;
+		it=tL.insertAfter(it,tW);
 		return tL;
 	}
 	
@@ -235,6 +270,16 @@ void resolveUnknownWords(tokenizedLine &tL){
 					tW.second=")";
 					it=tL.insertAfter(it,tW);
 				}
+				if(*s=='.'){
+					tW.first=Tdot;
+					tW.second=".";
+					it=tL.insertAfter(it,tW);
+				}
+				if(*s==','){
+					tW.first=Tcoma;
+					tW.second=",";
+					it=tL.insertAfter(it,tW);
+				}
 				s++;
 				jmp:;
 			}
@@ -245,8 +290,8 @@ void resolveUnknownWords(tokenizedLine &tL){
 	}
 }
 int main(){
-	char str1[]="let x = 5.0 , TVal = 7 , person._age = TVal";
-	char str2[]="let x=5.0,TVal=7,person._age=TVal";
+	char str1[]="let x = 5.0 , TVal = 7 , person . _age = TVal";
+	char str2[]="let x=5.0,TVal=7,person.*_age=TVal";
 	char str3[]="let x = \"jjkl as \\\" asljlf\" ,y= 3 ,m*= 'K'";
 	char str4[]="for   ;i=0,j%=((i+289)/3),m.n='v';;;i<=noofdata;j*=++i";
 	char **words;
