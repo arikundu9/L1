@@ -27,12 +27,18 @@ int main(){
 	// list.insertTop(3);
 	// list.insertTop(4);
 	for(it=list.head; it!=nullptr; it=it->next){
-		if(it->data==2)
-			/* it= */list.insertAfter(it,9);
-		if(it->data==6)
-			/* it= */list.eraseAfter(it);
+		// if(it->data==2)
+			// /* it= */list.insertAfter(it,9);
+		// if(it->data==6)
+			// /* it= */list.eraseAfter(it);
 		cout<<it->data<<endl;
 	}
+	// list.forEach([&](int i){
+		// cout<<i<<endl;
+	// });
+	list.forEachIterator([&](container::LinkedList<int>::iterator i){
+		cout<<i->data<<endl;
+	});
 	// for(it=list.head; it!=nullptr; it=it->next){
 		
 		// cout<<it->data<<endl;

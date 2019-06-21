@@ -8,6 +8,7 @@
 
 #ifndef _L1_LL_H
 #define _L1_LL_H
+#include<functional>
 namespace container{
 	template<typename V>
 	class node{
@@ -59,6 +60,20 @@ namespace container{
 					node<V> *tmp=new node<V>(d,id->next);
 					id->next=tmp;
 					return tmp;
+				}
+			}
+			void forEach(std::function<void(V)> f){
+				iterator it=head;
+				while(it!=nullptr){
+					f(it->data);
+					it=it->next;
+				}
+			}
+			void forEachIterator(std::function<void(iterator)> f){
+				iterator it=head;
+				while(it!=nullptr){
+					f(it);
+					it=it->next;
 				}
 			}
 			void merge(LinkedList<V> ll){

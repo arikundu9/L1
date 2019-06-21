@@ -34,10 +34,10 @@ char operators[][3]={"+=","-=","*=","/=","%=",
 					 "++","--",
 					 "+","-","*","/","%","=",
 					 ">","<",
-					 ",",":",";"
+					 ",",":"/* ,";" */
 					 };
 
-typedef enum tokens {Tnull,Tkeyword,Tidentifier,Toperator,Tinteger,Tfloatpoint,Tstring,Tchar} tokens;
+typedef enum tokens {Tnull,Tkeyword,Tidentifier,Toperator,Tinteger,Tfloatpoint,Tstring,Tchar,Tsemicolon,Tparenthsso,Tparenthssc} tokens;
 typedef std::pair<tokens,const char *> tokenizedWord;
 typedef container::LinkedList<tokenizedWord> tokenizedLine;
 typedef std::vector<tokenizedLine> tokenizedProg;
@@ -45,7 +45,6 @@ typedef std::vector<tokenizedLine> tokenizedProg;
 /*Function Declerations*/
 
 tokenizedLine getTokenozedLine(const char *);
-bool __cmp(tokenizedWord,tokenizedWord);
 bool isUnknownWordExists(tokenizedLine &);
 void resolveUnknownWords(tokenizedLine &);
 
@@ -139,9 +138,6 @@ tokenizedLine getTokenozedLine(const char *w){
 	} */
 	return tL;
 }
-bool __cmp(tokenizedWord,tokenizedWord){
-	return false;
-}
 bool isUnknownWordExists(tokenizedLine &tL){
 	bool r=false;
 	tokenizedLine::iterator it=tL.head;
@@ -154,11 +150,14 @@ bool isUnknownWordExists(tokenizedLine &tL){
 	return r;
 }
 void removeUnknownWord(tokenizedLine &tL){
-	tokenizedLine::iterator it=tL.head;
+	tokenizedLine::iterator it=tL.head,tmpIt;
+	tmpIt=it;
 	for(it=tL.head; it!=nullptr; it=it->next){
 		if(it->data.first==Tnull){
-			tL.eraseAfter(it);
+			tL.eraseAfter(tmpIt);
+			it=tmpIt;
 		}
+		tmpIt=it;
 	}
 }
 void resolveUnknownWords(tokenizedLine &tL){
@@ -168,8 +167,6 @@ void resolveUnknownWords(tokenizedLine &tL){
 	tokenizedWord tW;
 	it=tL.head;
 	for(it=tL.head; it!=nullptr; it=it->next){
-		tmpIt=it;
-		//tW=*it;
 		if(it->data.first==Tnull){
 			s=it->data.second;
 			while(!lexer::isLastChar(s)){
@@ -182,39 +179,47 @@ void resolveUnknownWords(tokenizedLine &tL){
 						i++;
 					}
 					if(lexer::isLastChar(op+i)){
-						cout<<"Operator: "<<op<<endl;
+						//cout<<"Operator: "<<op<<endl;
 						s+=i;
 						tW.first=Toperator;
 						tW.second=op;
-						//tmpIt=it;
-						it=tL.insertAfter(it,/* tokenizedWord(Toperator,op) */tW);
-						//it=tL.emplace_after(it,Toperator,op);
-						cout<<"1st: "<<tmpIt->data.first<<" , 2nd: "<<tmpIt->data.second<<endl;
-						//cout<<"1st: "<<it->data.first<<" , 2nd: "<<it->data.second<<endl;
-						//if()
-						//tL.eraseAfter(tmpIt);//tmp::
+						it=tL.insertAfter(it,tW);
+						//cout<<"1st: "<<tmpIt->data.first<<" , 2nd: "<<tmpIt->data.second<<endl;
 						goto jmp;
 					}
+				}
+				if(*s==';'){
+					tW.first=Tsemicolon;
+					tW.second=";";
+					it=tL.insertAfter(it,tW);
+				}
+				if(*s=='('){
+					tW.first=Tparenthsso;
+					tW.second="(";
+					it=tL.insertAfter(it,tW);
+				}
+				if(*s==')'){
+					tW.first=Tparenthssc;
+					tW.second=")";
+					it=tL.insertAfter(it,tW);
 				}
 				s++;
 				jmp:;
 			}
+			tL.eraseAfter(tmpIt);
+			it=tmpIt;
 		}
+		tmpIt=it;
 	}
-}
-void insert(tokenizedLine &tL){
-	tokenizedLine::iterator it=tL.head;
-	it=it->next;
-	it=tL.insertAfter(it,tokenizedWord(Tkeyword,"the"));
 }
 int main(){
 	char str1[]="let x = 5.0 , TVal = 7 , person._age = TVal";
 	char str2[]="let x=5.0,TVal=7,person._age=TVal";
 	char str3[]="let x = \"jjkl as \\\" asljlf\" ,y== 3 ,m*= 'K'";
-	char str4[]="for   ;i=0,j%=((i+2)/3),m='v';;;i<=noofdata;j=++i";
+	char str4[]="for   ;i=0,j%=((i+2)/3),m='v';;;i<=noofdata;j*=++i";
 	char **words;
 	tokenizedLine tL;
-	words=getWords(str3);
+	words=getWords(str4);
 	for(int i=0;!(words[i][0]=='\0' and words[i][1]=='\0');i++){
 		//cout<<words[i]<<endl;
 		
@@ -222,13 +227,16 @@ int main(){
 	}
 	free(words);
 	resolveUnknownWords(tL);
-	removeUnknownWord(tL);
-	insert(tL);
 	//removeUnknownWord(tL);
-	tokenizedLine::iterator it=tL.head;
+	//removeUnknownWord(tL);
+	/* tokenizedLine::iterator it=tL.head;
 	for(it=tL.head; it!=nullptr; it=it->next){
 		cout<<"\nType: "<<it->data.first<<", String: "<<it->data.second;
-	}
+	} */
+	
+	tL.forEach([&](tokenizedWord tW){
+		cout<<"\nType: "<<tW.first<<", String: "<<tW.second;
+	});
 	return 0;
 }
 
