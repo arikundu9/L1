@@ -33,9 +33,9 @@ int main(){
 			// /* it= */list.eraseAfter(it);
 		cout<<it->data<<endl;
 	}
-	// list.forEach([&](int i){
-		// cout<<i<<endl;
-	// });
+	list.forEach([&](int i){
+		cout<<i<<endl;
+	});
 	list.forEachIterator([&](container::LinkedList<int>::iterator i){
 		cout<<i->data<<endl;
 	});
