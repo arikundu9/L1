@@ -19,7 +19,7 @@
 //#include "tokenizer.hpp"
 /*+---tokenizedLine getTokenozedLine(const char *);
  */
-#define VERSION "0.2"
+#define VERSION "0.3"
 
 #define LINE_MAX 100
 
