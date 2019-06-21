@@ -29,6 +29,8 @@ namespace lexer{
 	inline bool is_AZ(const char *);
 	inline bool is_az(const char *);
 	inline bool is_09(const char *);
+	inline bool isIdentifierStart(const char *);
+	inline bool isIdentifierChar(const char *);
 	void increment(const char **,int *);
 	FsmLine word_parser_fsm(const char *);
 	char** get_words(const char *,FsmLine);
@@ -58,6 +60,12 @@ namespace lexer{
 	}
 	inline bool is_09(const char *c){
 		return (*c>=48 and *c<=57);
+	}
+	inline bool isIdentifierStart(const char *c){
+		return (*c=='_' or is_AZ(c) or is_az(c));
+	}
+	inline bool isIdentifierChar(const char *c){
+		return (isIdentifierStart(c) or is_09(c));
 	}
 	void increment(const char **c,int *i){
 		if(isEscQuote(*c))
