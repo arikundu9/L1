@@ -188,6 +188,24 @@ void resolveUnknownWords(tokenizedLine &tL){
 						goto jmp;
 					}
 				}
+				if(lexer::is_09(s)){
+					int o;
+					i=0;
+					while(lexer::is_09(s+i)){
+						i++;
+					}
+					cout<<endl;
+					tW.first=Tinteger;
+					char *p=(char*)malloc(i+1);
+					for(o=0;o<i;o++){
+						*(p+o)=*(s+o);
+					}
+					*(p+o)='\0';
+					tW.second=p;
+					it=tL.insertAfter(it,tW);
+					s+=i;
+					goto jmp;
+				}
 				if(*s==';'){
 					tW.first=Tsemicolon;
 					tW.second=";";
@@ -216,7 +234,7 @@ int main(){
 	char str1[]="let x = 5.0 , TVal = 7 , person._age = TVal";
 	char str2[]="let x=5.0,TVal=7,person._age=TVal";
 	char str3[]="let x = \"jjkl as \\\" asljlf\" ,y== 3 ,m*= 'K'";
-	char str4[]="for   ;i=0,j%=((i+2)/3),m='v';;;i<=noofdata;j*=++i";
+	char str4[]="for   ;i=0,j%=((i+289)/3),m='v';;;i<=noofdata;j*=++i";
 	char **words;
 	tokenizedLine tL;
 	words=getWords(str4);
