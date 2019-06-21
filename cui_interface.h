@@ -25,33 +25,43 @@ void parse_arg(int,char**);
 
 void printh(){
 	printf("\nL1 Code Interpreter   v%s\n",VERSION);
-	printf("\nUsage:\tL1 [-OPTIONS] [INPUT_L1_SOURCE]\n");
+	printf("\nUsage:\tL1 [-OPTIONS]\n");
 	printf("\n[-OPTIONS]\n");
-	printf("\t-o:path\t\tSet output file path.\n");
+	printf("\t-i PATH\t\tSet L1 source file path.\n");
+	printf("\t-o PATH\t\tSet output file path.\n");
 	printf("\t-v\t\tDisplay compiled versions.\n");
 	printf("\t-help\t\tPrint this help message.\n");
-	printf("\nExample:\tL1 -o:outputfile.ext source.lone\n\n");
+	printf("\nExample:\tL1 -i source.lone -o outputfile.ext\n\n");
 }
 
 
 void parse_arg(int argc,char **argv){
 	char *ctmp;
 	pInput in;
-	for(int i=1; i<argc; i++){
+	int i;
+	for(i=1; i<argc; i++){
 		ctmp=*(argv+i);
 		if(strcmp(ctmp,"-help")==0)
 			printh();
-		else if(strcmp(ctmp,"-v")==0)
-			printf("\n%s\n",VERSION);
-		else if( (*ctmp=='-') and (*(ctmp+1)=='o') )
-			in.target_path=ctmp+3;
-		else if(i+1 == argc){
-			in.source_path=ctmp;
-			interprete_file(&in);
+		else if((*ctmp=='-')){
+			if(*(ctmp+1)=='v' and *(ctmp+2)=='\0')
+				printf("\n%s\n",VERSION);
+			else if(*(ctmp+1)=='o' and *(ctmp+2)=='\0')
+				in.target_path=*(argv+(++i));
+			else if(*(ctmp+1)=='i' and *(ctmp+2)=='\0')
+				in.source_path=*(argv+(++i));
+			else{
+				fprintf(stderr,"\nERROR::Invalid Option : %s\n",ctmp);
+				exit(1);
+			}
 		}
 		else{
-			exit;
+			fprintf(stderr,"\nERROR::Invalid Argument : %s\n",ctmp);
+			exit(2);
 		}
+	}
+	if(i==argc){
+		interprete_file(&in);
 	}
 }
 
