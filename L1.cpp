@@ -7,7 +7,7 @@
  */
 
 #include<stdio.h>
-#include<cui_interface.h>
+#include "cui_interface.h"
 /*|---void printh();
  *+---void parse_arg(int,char**);
  */

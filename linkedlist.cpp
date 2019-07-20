@@ -33,10 +33,10 @@ int main(){
 			// /* it= */list.eraseAfter(it);
 		cout<<it->data<<endl;
 	}
-	list.forEach([&](int i){
+	list.forEach([&](auto i){
 		cout<<i<<endl;
 	});
-	list.forEachIterator([&](container::LinkedList<int>::iterator i){
+	list.forEachIterator([&](container::LinkedList<int>::iterator /*auto*/ i){
 		cout<<i->data<<endl;
 	});
 	// for(it=list.head; it!=nullptr; it=it->next){
