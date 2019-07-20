@@ -1,7 +1,7 @@
 /* Project L1 - A new programming language for noobs
  *
  * Copyright (C) 2018-2019 - Arijit Kundu <arikundu9@gmail.com>
- *
+ * 
  * This file belongs to the Project L1.
  * Any commercial use of this file is prohibited.
  */
@@ -13,7 +13,7 @@
 #include<cstring>
 #include<forward_list>
 #include<vector>
-#include<regex>
+#include<regex> 
 #include<cstdio>
 #include "lexer.hpp"
 #include "linkedlist.hpp"
@@ -151,11 +151,11 @@ tokenizedLine getTokenozedLine(const char *w){
 		it=tL.insertAfter(it,tW);
 		return tL;
 	}
-
+	
 	tW.first=tk;
 	tW.second=w;
 	it=tL.insertAfter(it,tW);
-
+	
 	/* cout<<w<<"  ::  is a unknown word\n";
 	char **words;
 	words=explode(w,';');
@@ -167,7 +167,7 @@ tokenizedLine getTokenozedLine(const char *w){
 			cout<<w2[j]<<endl;
 		}
 	} */
-
+	
 	/* while(isUnknownWordExists(tL)){
 		//resolveUnknownWords(tL);
 	} */
@@ -296,7 +296,7 @@ int main(){
 	char str4[]="for   ;i=0,j%=((i+289)/3),m.n='v';;;i<=noofdata;j*=++i";
 	char **words;
 	tokenizedLine tL;
-	words=getWords(str4);
+	words=getWords(str2);
 	for(int i=0;!(words[i][0]=='\0' and words[i][1]=='\0');i++){
 		//cout<<words[i]<<endl;
 		
@@ -312,7 +312,7 @@ int main(){
 	} */
 	
 	tL.forEach([&](tokenizedWord tW){
-		cout<<"Type: "<<tW.first<<", String: "<<tW.second<<endl;
+		cout<<"\nType: "<<tW.first<<", String: "<<tW.second;
 	});
 	return 0;
 }

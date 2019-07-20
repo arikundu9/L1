@@ -12,7 +12,7 @@
 #include<cstdlib>
 #include<cstring>
 #include<regex>
-#include "lexer.hpp"
+#include<lexer.hpp>
 /*|---char** getWords(const char *);
  *+---char** explode(const char *,char);
  */
