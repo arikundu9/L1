@@ -11,7 +11,7 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
-#include<L1.hpp>
+#include "L1.hpp"
 /*|---pInput{char *source_path,*target_path;}
  *+---void interprete_file(pInput *);
  */
@@ -44,8 +44,10 @@ void parse_arg(int argc,char **argv){
 		if(strcmp(ctmp,"-help")==0)
 			printh();
 		else if((*ctmp=='-')){
-			if(*(ctmp+1)=='v' and *(ctmp+2)=='\0')
-				printf("\n%s\n",VERSION);
+			if(*(ctmp+1)=='v' and *(ctmp+2)=='\0'){
+				printf("%s\n",VERSION);
+				exit(3);
+			}
 			else if(*(ctmp+1)=='o' and *(ctmp+2)=='\0')
 				in.target_path=*(argv+(++i));
 			else if(*(ctmp+1)=='i' and *(ctmp+2)=='\0')
