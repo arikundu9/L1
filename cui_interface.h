@@ -41,8 +41,10 @@ void parse_arg(int argc,char **argv){
 	int i;
 	for(i=1; i<argc; i++){
 		ctmp=*(argv+i);
-		if(strcmp(ctmp,"-help")==0)
+		if(strcmp(ctmp,"-help")==0){
 			printh();
+			exit(4);
+		}
 		else if((*ctmp=='-')){
 			if(*(ctmp+1)=='v' and *(ctmp+2)=='\0'){
 				printf("%s\n",VERSION);
