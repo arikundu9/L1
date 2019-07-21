@@ -86,6 +86,9 @@ namespace container{
 					it->next=ll.head;
 				}
 			}
+			V &operator[](iterator i){
+				return i->data;
+			}
 	};
 }
 #endif

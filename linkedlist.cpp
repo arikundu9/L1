@@ -11,10 +11,11 @@
 #include<iostream>
 #include "linkedlist.hpp"
 using namespace std;
-
+using namespace container;
+typedef LinkedList<int> intL;
 int main(){
-	container::LinkedList<int> list;
-	container::LinkedList<int>::iterator it;
+	intL list;
+	intL::iterator it;
 	it=list.head;
 	it=list.insertAfter(it,1);
 	it=list.insertAfter(it,2);
@@ -33,12 +34,14 @@ int main(){
 			// /* it= */list.eraseAfter(it);
 		cout<<it->data<<endl;
 	}
+	cout<<"\n-----------------------------------------------------\n";
 	list.forEach([&](int i){
 		cout<<i<<endl;
 	});
-	list.forEachIterator([&](/*container::LinkedList<int>::iterator*/ auto i){
-		cout<<i->data<<endl;
-	});
+	// list.forEachIterator([&](/*LinkedList<int>::iterator*/ auto i){
+	// 	//cout<<i->data<<endl;
+	// 	cout<<list[i]<<endl;
+	// });
 	// for(it=list.head; it!=nullptr; it=it->next){
 		
 		// cout<<it->data<<endl;
