@@ -1,6 +1,6 @@
 CPP      = g++
 CC       = gcc
-ifeq($(OS),Windows_NT)
+ifeq ($(OS),Windows_NT)
 	BIN	 = L1.exe
 else
 	BIN  = L1
