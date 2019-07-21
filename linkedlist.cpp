@@ -36,7 +36,7 @@ int main(){
 	list.forEach([&](int i){
 		cout<<i<<endl;
 	});
-	list.forEachIterator([&](container::LinkedList<int>::iterator i){
+	list.forEachIterator([&](/*container::LinkedList<int>::iterator*/ auto i){
 		cout<<i->data<<endl;
 	});
 	// for(it=list.head; it!=nullptr; it=it->next){
