@@ -29,17 +29,24 @@ namespace container{
 	template<typename V>
 	class LinkedList{
 		public:
-			class itc{
+			class itr{
 				public:
 					node<V> *ptr;
-					itc(node<V> *t){
+					itr(node<V> *t){
 						ptr=t;
+					}
+					itr(){
+						ptr=nullptr;
 					}
 					void value(V d){
 						ptr->data=d;
 					}
 					V value(){
 						return ptr->data;
+					}
+					itr& operator=(node<V> *p){
+						ptr=p;
+						return *this;
 					}
 					node<V>* operator++(int){
 						if(ptr!=nullptr)
@@ -48,19 +55,65 @@ namespace container{
 			};
 			typedef node<V>* iterator;
 			node<V> *head;
-			itc it;
-			LinkedList():it(head){
+
+			LinkedList(){
 				head=nullptr;
 			}
 			bool isEmpty(){
 				return (head==nullptr);
 			}
-			node<V>* insertTop(V d){
+			itr insertTop(V d){
 				node<V> *tmp=new node<V>(d);
 				tmp->next=head;
 				head=tmp;
-				return head;
+				return itr(head);
 			}
+			itr insertAfter(itr id,V d){
+				if(head==nullptr){
+					return insertTop(d);
+				}
+				else{
+					node<V> *tmp=new node<V>(d,id.ptr->next);
+					id.ptr->next=tmp;
+					return itr(tmp);
+				}
+			}
+			void append(V d){
+				itr it=head;
+				if(head==nullptr){
+					insertTop(d);
+				}
+				else{
+					while(it.ptr->next!=nullptr){
+						it++;
+					}
+					insertAfter(it,d);
+				}
+			}
+			void forEach(std::function<void(V)> f){
+				itr it=head;
+				while(it.ptr!=nullptr){
+					f(it.ptr->data);
+					it++;
+				}
+			}
+			void forEachItr(std::function<void(itr)> f){
+				itr it=head;
+				while(it.ptr!=nullptr){
+					f(it);
+					it++;
+				}
+			}
+			V& operator[](itr it){
+				return it.ptr->data;
+			}
+			/*---------------------------------------------------------------------*/
+			// node<V>* insertTop(V d){
+			// 	node<V> *tmp=new node<V>(d);
+			// 	tmp->next=head;
+			// 	head=tmp;
+			// 	return head;
+			// }
 			void eraseAfter(iterator id){
 				iterator tmp;
 				if(id!=nullptr){
@@ -80,24 +133,6 @@ namespace container{
 					return tmp;
 				}
 			}
-			itc insertAfter(itc id,V d){
-				if(head==nullptr){
-					insertTop(d);
-					return id;
-				}
-				else{
-					node<V> *tmp=new node<V>(d,id.ptr);
-					id.ptr=tmp;
-					return id;
-				}
-			}
-			void forEach(std::function<void(V)> f){
-				iterator it=head;
-				while(it!=nullptr){
-					f(it->data);
-					it=it->next;
-				}
-			}
 			void forEachIterator(std::function<void(iterator)> f){
 				iterator it=head;
 				while(it!=nullptr){
@@ -105,13 +140,7 @@ namespace container{
 					it=it->next;
 				}
 			}
-			void forEachIt(std::function<void(iterator)> f){
-				iterator it=head;
-				while(it!=nullptr){
-					f(it);
-					it=it->next;
-				}
-			}
+			/*---------------------------------------------------------------------------------*/
 			void merge(LinkedList<V> ll){
 				iterator it=head;
 				if(head==nullptr)
